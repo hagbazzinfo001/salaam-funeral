@@ -35,7 +35,7 @@ const services = [
       "Qiblah-facing burial placement",
       "Islamic cemetery arrangements",
     ],
-    price: "From   &#8358; 2,500",
+    price: "From   ₦ 2,500",
     popular: true,
   },
   {
@@ -51,7 +51,7 @@ const services = [
       "Audio/visual equipment setup",
       "Photography and documentation",
     ],
-    price: "From   &#8358; 1,800",
+    price: "From   ₦ 1,800",
     popular: false,
   },
   {
@@ -67,7 +67,7 @@ const services = [
       "Airport pickup and delivery",
       "Dignified transfer services",
     ],
-    price: "From   &#8358; 800",
+    price: "From   ₦ 8000",
     popular: false,
   },
   {
@@ -83,7 +83,7 @@ const services = [
       "After-hours imam services",
       "Emergency documentation assistance",
     ],
-    price: "From   &#8358; 500",
+    price: "From   ₦ 5000",
     popular: false,
   },
   {
@@ -99,7 +99,7 @@ const services = [
       "Children and teen counseling",
       "Long-term follow-up care",
     ],
-    price: "From   &#8358; 120/session",
+    price: "From   ₦; 120/session",
     popular: false,
   },
   {
@@ -115,7 +115,7 @@ const services = [
       "International documentation",
       "Estate planning guidance",
     ],
-    price: "From   &#8358; 300",
+    price: "From   ₦ 3000",
     popular: false,
   },
 ];
