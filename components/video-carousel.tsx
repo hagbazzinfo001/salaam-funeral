@@ -1,9 +1,55 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Play, Pause } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  motion,
+  AnimatePresence,
+  useAnimation,
+  useInView,
+} from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+
+function Counter({
+  from = 0,
+  to,
+  duration = 2,
+  suffix = "",
+}: {
+  from?: number;
+  to: number;
+  duration?: number;
+  suffix?: string;
+}) {
+  const nodeRef = useRef<HTMLSpanElement>(null);
+  const [count, setCount] = useState(from);
+
+  useEffect(() => {
+    let startTime: number | null = null;
+
+    const step = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / (duration * 1000), 1);
+      const eased = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+      const value = Math.floor(from + (to - from) * eased);
+
+      setCount(value);
+
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      }
+    };
+
+    requestAnimationFrame(step);
+  }, [from, to, duration]);
+
+  return (
+    <span ref={nodeRef}>
+      {count}
+      {suffix}
+    </span>
+  );
+}
 
 const testimonials = [
   {
@@ -75,6 +121,8 @@ export function VideoCarousel() {
   const togglePlayPause = () => {
     setIsPlaying(!isPlaying);
   };
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: false }); // 👈 recount every time it re-enters
 
   return (
     <section className="py-20 bg-gradient-to-br from-islamic-50 to-gold-50">
@@ -201,7 +249,7 @@ export function VideoCarousel() {
         </div>
 
         {/* Statistics */}
-        <motion.div
+        {/* <motion.div
           className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -229,6 +277,46 @@ export function VideoCarousel() {
           <div className="text-center">
             <div className="text-3xl md:text-4xl font-bold text-gold-600 mb-2">
               100%
+            </div>
+            <div className="text-gray-600">Islamic Compliant</div>
+          </div>
+        </motion.div> */}
+
+        <motion.div
+          ref={ref}
+          className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.8 }}
+        >
+          {/* Families Served */}
+          <div className="text-center">
+            <div className="text-3xl md:text-4xl font-bold text-islamic-600 mb-2">
+              {isInView && <Counter to={500} suffix="+" />}
+            </div>
+            <div className="text-gray-600">Families Served</div>
+          </div>
+
+          {/* Years Experience */}
+          <div className="text-center">
+            <div className="text-3xl md:text-4xl font-bold text-gold-600 mb-2">
+              {isInView && <Counter to={15} suffix="+" />}
+            </div>
+            <div className="text-gray-600">Years Experience</div>
+          </div>
+
+          {/* Availability */}
+          <div className="text-center">
+            <div className="text-3xl md:text-4xl font-bold text-islamic-600 mb-2">
+              {isInView && <Counter to={24} suffix="/7" />}
+            </div>
+            <div className="text-gray-600">Availability</div>
+          </div>
+
+          {/* Islamic Compliant */}
+          <div className="text-center">
+            <div className="text-3xl md:text-4xl font-bold text-gold-600 mb-2">
+              {isInView && <Counter to={100} suffix="%" />}
             </div>
             <div className="text-gray-600">Islamic Compliant</div>
           </div>
